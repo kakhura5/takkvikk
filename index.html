@@ -13,10 +13,9 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            cursor: none;
         }
 
-        /* Custom Cursor */
+        /* Custom Cursor — hidden on file:// protocol, shown on server */
         .cursor-dot {
             position: fixed;
             width: 12px;
@@ -28,6 +27,7 @@
             transform: translate(-50%, -50%);
             transition: width 0.2s, height 0.2s, background 0.2s;
             mix-blend-mode: difference;
+            display: none;
         }
 
         .cursor-ring {
@@ -41,28 +41,11 @@
             transform: translate(-50%, -50%);
             transition: transform 0.12s ease-out, width 0.2s, height 0.2s, border-color 0.2s;
             opacity: 0.7;
+            display: none;
         }
 
         .cursor-trail {
-            position: fixed;
-            width: 6px;
-            height: 6px;
-            background: var(--accent-rose);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9997;
-            transform: translate(-50%, -50%);
-            opacity: 0;
-            animation: trailFade 0.6s ease-out forwards;
-        }
-
-        @keyframes trailFade {
-            0% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
-            100% { opacity: 0; transform: translate(-50%, -50%) scale(0); }
-        }
-
-        a, button, .gallery-item, .model-image, .nav-link, .social-link {
-            cursor: none !important;
+            display: none;
         }
 
         :root {
@@ -749,70 +732,6 @@
             transform: rotate(90deg) scale(1.1);
         }
 
-        /* Loading Screen */
-        #loader {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: #0a0a0a;
-            z-index: 99999;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.8s ease, visibility 0.8s;
-        }
-
-        #loader.hidden {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .loader-text {
-            font-family: 'Cinzel', serif;
-            font-size: 5em;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--accent-gold), var(--accent-rose), var(--accent-teal));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: loaderPulse 1.5s ease-in-out infinite;
-            letter-spacing: 6px;
-        }
-
-        @keyframes loaderPulse {
-            0%, 100% { opacity: 0.4; transform: scale(0.97); }
-            50% { opacity: 1; transform: scale(1); }
-        }
-
-        .loader-bar-wrap {
-            width: 300px;
-            height: 3px;
-            background: rgba(255,255,255,0.1);
-            margin-top: 40px;
-            overflow: hidden;
-        }
-
-        .loader-bar {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent-gold), var(--accent-rose));
-            animation: loadBar 2s ease-out forwards;
-        }
-
-        @keyframes loadBar {
-            from { width: 0%; }
-            to { width: 100%; }
-        }
-
-        .loader-sub {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.3em;
-            font-style: italic;
-            color: rgba(255,255,255,0.4);
-            margin-top: 20px;
-            letter-spacing: 4px;
-        }
-
         /* Marquee Ticker */
         .marquee-section {
             overflow: hidden;
@@ -1081,17 +1000,17 @@
             .floating-socials { display: none; }
             .brands-row { gap: 30px; }
             .stat-number { font-size: 3.5em; }
-            .loader-text { font-size: 3em; }
         }
     </style>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div id="loader">
-        <div class="loader-text">ᲗᲐᲙᲝᲔᲑᲘ</div>
-        <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
-        <div class="loader-sub">თაკო · ვიკა · დიანა</div>
-    </div>
+    <!-- Auto-play music: hidden iframe, triggers on first user interaction -->
+    <iframe id="ytMusic"
+        src="https://www.youtube.com/embed/kRt2sRyup6A?autoplay=1&mute=0&loop=1&playlist=kRt2sRyup6A&controls=0&enablejsapi=1"
+        style="position:fixed;width:0;height:0;border:0;left:-1px;top:-1px;"
+        allow="autoplay; encrypted-media"
+        frameborder="0">
+    </iframe>
 
     <!-- Custom Cursor -->
     <div class="cursor-dot" id="cursorDot"></div>
@@ -1405,7 +1324,7 @@
                         <h2 class="contact-name">თაკო უძილაური</h2>
                         <div class="contact-item">
                             <i class="fas fa-envelope"></i>
-                            <span>tako.udzilauri@gmail.com</span>
+                            <span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a6d2c7cdc988d3c2dccfcac7d3d4cfe6c1cbc7cfca88c5c9cb">[email&#160;protected]</a></span>
                         </div>
                         <div class="contact-item">
                             <i class="fas fa-phone"></i>
@@ -1425,7 +1344,7 @@
                         <h2 class="contact-name">ვიკა ხარიტონაშვილი</h2>
                         <div class="contact-item">
                             <i class="fas fa-envelope"></i>
-                            <span>vika.kharitonashvili@gmail.com</span>
+                            <span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2b5d42404a0540434a59425f44454a58435d4247426b4c464a424705484446">[email&#160;protected]</a></span>
                         </div>
                         <div class="contact-item">
                             <i class="fas fa-phone"></i>
@@ -1445,7 +1364,7 @@
                         <h2 class="contact-name">დიანა ბოდაველი</h2>
                         <div class="contact-item">
                             <i class="fas fa-envelope"></i>
-                            <span>diana.bodaveli@gmail.com</span>
+                            <span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="204449414e410e424f444156454c4960474d41494c0e434f4d">[email&#160;protected]</a></span>
                         </div>
                         <div class="contact-item">
                             <i class="fas fa-phone"></i>
@@ -1485,13 +1404,8 @@
     </div>
 
     <script>
-        // Loading Screen
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.getElementById('loader').classList.add('hidden');
-                triggerCounters();
-            }, 2200);
-        });
+        // Start counters immediately when page is ready
+        document.addEventListener('DOMContentLoaded', triggerCounters);
 
         // Custom Cursor
         const dot = document.getElementById('cursorDot');
@@ -1592,18 +1506,4 @@
 
         // Modal
         function openModal(src) {
-            const modal = document.getElementById('modal');
-            document.getElementById('modalImage').src = src;
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal() {
-            document.getElementById('modal').classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-
-        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-    </script>
-</body>
-</html>
+            const modal 
