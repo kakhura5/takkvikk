@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>თაკო უძილაური & ვიკა ხარიტონაშვილი - მოდელები</title>
+    <title>ᲗᲐᲙᲝᲔᲑᲘ - თაკო · ვიკა · დიანა</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,6 +13,56 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            cursor: none;
+        }
+
+        /* Custom Cursor */
+        .cursor-dot {
+            position: fixed;
+            width: 12px;
+            height: 12px;
+            background: var(--accent-gold);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, background 0.2s;
+            mix-blend-mode: difference;
+        }
+
+        .cursor-ring {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--accent-gold);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: transform 0.12s ease-out, width 0.2s, height 0.2s, border-color 0.2s;
+            opacity: 0.7;
+        }
+
+        .cursor-trail {
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            background: var(--accent-rose);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9997;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            animation: trailFade 0.6s ease-out forwards;
+        }
+
+        @keyframes trailFade {
+            0% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(0); }
+        }
+
+        a, button, .gallery-item, .model-image, .nav-link, .social-link {
+            cursor: none !important;
         }
 
         :root {
@@ -269,8 +319,8 @@
 
         .models-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 80px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
             margin-bottom: 100px;
         }
 
@@ -282,7 +332,7 @@
         }
 
         .model-card:nth-child(odd) {
-            transform: translateY(50px);
+            transform: translateY(30px);
         }
 
         .model-card:hover {
@@ -291,10 +341,10 @@
 
         .model-image-container {
             position: relative;
-            aspect-ratio: 2/3;
+            aspect-ratio: 3/4;
             overflow: hidden;
-            border: 3px solid var(--accent-gold);
-            box-shadow: 20px 20px 0 var(--accent-rose), -20px -20px 0 var(--accent-teal);
+            border: 2px solid var(--accent-gold);
+            box-shadow: 10px 10px 0 var(--accent-rose), -10px -10px 0 var(--accent-teal);
         }
 
         .model-image-grid {
@@ -341,27 +391,27 @@
         }
 
         .model-info {
-            margin-top: 40px;
-            padding: 30px;
+            margin-top: 20px;
+            padding: 20px;
             background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(255, 107, 157, 0.1));
             border-left: 5px solid var(--accent-gold);
         }
 
         .model-name {
             font-family: 'Cinzel', serif;
-            font-size: 3em;
+            font-size: 1.8em;
             font-weight: 700;
             color: var(--accent-gold);
-            margin-bottom: 10px;
-            letter-spacing: 2px;
+            margin-bottom: 6px;
+            letter-spacing: 1px;
         }
 
         .model-role {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.5em;
+            font-size: 1.2em;
             font-style: italic;
             color: var(--secondary);
-            margin-bottom: 25px;
+            margin-bottom: 15px;
         }
 
         .model-social {
@@ -394,8 +444,8 @@
         /* About Section */
         .about-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 80px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
             max-width: 1800px;
             margin: 0 auto;
             padding: 50px;
@@ -470,7 +520,7 @@
 
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 20px;
         }
 
@@ -699,23 +749,307 @@
             transform: rotate(90deg) scale(1.1);
         }
 
-        /* Responsive */
+        /* Loading Screen */
+        #loader {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: #0a0a0a;
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+
+        #loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-text {
+            font-family: 'Cinzel', serif;
+            font-size: 5em;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-rose), var(--accent-teal));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: loaderPulse 1.5s ease-in-out infinite;
+            letter-spacing: 6px;
+        }
+
+        @keyframes loaderPulse {
+            0%, 100% { opacity: 0.4; transform: scale(0.97); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        .loader-bar-wrap {
+            width: 300px;
+            height: 3px;
+            background: rgba(255,255,255,0.1);
+            margin-top: 40px;
+            overflow: hidden;
+        }
+
+        .loader-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-gold), var(--accent-rose));
+            animation: loadBar 2s ease-out forwards;
+        }
+
+        @keyframes loadBar {
+            from { width: 0%; }
+            to { width: 100%; }
+        }
+
+        .loader-sub {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3em;
+            font-style: italic;
+            color: rgba(255,255,255,0.4);
+            margin-top: 20px;
+            letter-spacing: 4px;
+        }
+
+        /* Marquee Ticker */
+        .marquee-section {
+            overflow: hidden;
+            padding: 20px 0;
+            border-top: 1px solid rgba(212,175,55,0.3);
+            border-bottom: 1px solid rgba(212,175,55,0.3);
+            background: rgba(212, 175, 55, 0.05);
+            margin: 0;
+        }
+
+        .marquee-track {
+            display: flex;
+            gap: 0;
+            animation: marqueeScroll 25s linear infinite;
+            width: max-content;
+        }
+
+        @keyframes marqueeScroll {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+
+        .marquee-item {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1.4em;
+            letter-spacing: 4px;
+            color: var(--accent-gold);
+            padding: 0 60px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            white-space: nowrap;
+        }
+
+        .marquee-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-rose);
+            border-radius: 50%;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            padding: 100px 50px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 50px 30px;
+            background: linear-gradient(135deg, rgba(212,175,55,0.08), rgba(255,107,157,0.05));
+            border: 1px solid rgba(212,175,55,0.2);
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.3s, transform 0.3s;
+        }
+
+        .stat-item:hover {
+            border-color: var(--accent-gold);
+            transform: translateY(-5px);
+        }
+
+        .stat-item::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-gold), var(--accent-rose));
+            transform: scaleX(0);
+            transition: transform 0.4s;
+        }
+
+        .stat-item:hover::before {
+            transform: scaleX(1);
+        }
+
+        .stat-number {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 5em;
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-rose));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3em;
+            font-style: italic;
+            color: rgba(244,244,244,0.7);
+            margin-top: 10px;
+        }
+
+        /* Featured In Section */
+        .featured-section {
+            padding: 80px 50px;
+            text-align: center;
+            border-top: 1px solid rgba(212,175,55,0.15);
+        }
+
+        .featured-label {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1.2em;
+            letter-spacing: 6px;
+            color: rgba(244,244,244,0.35);
+            margin-bottom: 50px;
+        }
+
+        .brands-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 70px;
+            flex-wrap: wrap;
+        }
+
+        .brand-name {
+            font-family: 'Cinzel', serif;
+            font-size: 1.6em;
+            letter-spacing: 3px;
+            color: rgba(244,244,244,0.25);
+            transition: color 0.4s, transform 0.4s;
+            white-space: nowrap;
+        }
+
+        .brand-name:hover {
+            color: var(--accent-gold);
+            transform: scale(1.1);
+        }
+
+        /* Floating Social Buttons */
+        .floating-socials {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 500;
+        }
+
+        .float-btn {
+            width: 52px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(26,26,26,0.9);
+            border: 1px solid rgba(212,175,55,0.4);
+            color: var(--accent-gold);
+            font-size: 1.4em;
+            text-decoration: none;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        .float-btn::before {
+            content: attr(data-label);
+            position: absolute;
+            right: 65px;
+            background: var(--accent-gold);
+            color: var(--primary);
+            padding: 6px 14px;
+            font-family: 'Bebas Neue', cursive;
+            font-size: 0.9em;
+            letter-spacing: 1px;
+            white-space: nowrap;
+            opacity: 0;
+            transform: translateX(10px);
+            transition: all 0.3s;
+            pointer-events: none;
+        }
+
+        .float-btn:hover::before {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .float-btn:hover {
+            background: var(--accent-gold);
+            color: var(--primary);
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 25px rgba(212,175,55,0.4);
+        }
+
+        /* Parallax hero title */
+        .hero-title {
+            transition: transform 0.1s linear;
+            will-change: transform;
+        }
+
+        /* Section Divider */
+        .divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px 50px;
+            opacity: 0.4;
+        }
+
+        .divider-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+        }
+
+        .divider-icon {
+            font-size: 1.2em;
+            color: var(--accent-gold);
+        }
+
+        /* Responsive additions */
         @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
             .models-grid,
-            .about-grid,
-            .contact-grid {
-                grid-template-columns: 1fr;
-                gap: 50px;
+            .about-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 30px;
             }
-
-            .model-card:nth-child(odd) {
-                transform: translateY(0);
-            }
-
             .gallery-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
-
             .gallery-item:nth-child(1) {
                 grid-column: span 1;
                 grid-row: span 1;
@@ -735,41 +1069,57 @@
                 transition: left 0.3s;
                 border-top: 2px solid var(--accent-gold);
             }
-
-            .nav-menu.active {
-                left: 0;
-            }
-
-            .mobile-toggle {
-                display: block;
-            }
-
-            .hero-title {
-                font-size: 3em;
-            }
-
-            .page-title {
-                font-size: 3em;
-            }
-
-            .gallery-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .model-image-container {
-                box-shadow: 10px 10px 0 var(--accent-rose), -10px -10px 0 var(--accent-teal);
-            }
+            .nav-menu.active { left: 0; }
+            .mobile-toggle { display: block; }
+            .hero-title { font-size: 3em; }
+            .page-title { font-size: 3em; }
+            .models-grid, .about-grid { grid-template-columns: 1fr; }
+            .model-card:nth-child(odd) { transform: translateY(0); }
+            .gallery-grid { grid-template-columns: 1fr; }
+            .model-image-container { box-shadow: 10px 10px 0 var(--accent-rose), -10px -10px 0 var(--accent-teal); }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .floating-socials { display: none; }
+            .brands-row { gap: 30px; }
+            .stat-number { font-size: 3.5em; }
+            .loader-text { font-size: 3em; }
         }
     </style>
 </head>
 <body>
+    <!-- Loading Screen -->
+    <div id="loader">
+        <div class="loader-text">ᲗᲐᲙᲝᲔᲑᲘ</div>
+        <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+        <div class="loader-sub">თაკო · ვიკა · დიანა</div>
+    </div>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <!-- Floating Social Buttons -->
+    <div class="floating-socials">
+        <a href="https://www.instagram.com/takuuss/" target="_blank" class="float-btn" data-label="თაკო @takuuss">
+            <i class="fab fa-instagram"></i>
+        </a>
+        <a href="https://www.instagram.com/vikunnakh/" target="_blank" class="float-btn" data-label="ვიკა @vikunnakh">
+            <i class="fab fa-instagram"></i>
+        </a>
+        <a href="https://www.instagram.com/bodaveli_dianaa/" target="_blank" class="float-btn" data-label="დიანა @bodaveli_dianaa">
+            <i class="fab fa-instagram"></i>
+        </a>
+        <a href="#" class="float-btn" id="scrollTopBtn" data-label="ზემოთ">
+            <i class="fas fa-arrow-up"></i>
+        </a>
+    </div>
+
     <div class="bg-animation"></div>
     
     <div class="content-wrapper">
         <!-- Navigation -->
         <nav>
             <div class="nav-container">
-                <div class="logo" onclick="showPage('home')">T × V</div>
+                <div class="logo" onclick="showPage('home')">ᲗᲐᲙᲝᲔᲑᲘ</div>
                 <ul class="nav-menu" id="navMenu">
                     <li><a href="#" class="nav-link active" data-page="home">მთავარი</a></li>
                     <li><a href="#" class="nav-link" data-page="about">ჩვენ შესახებ</a></li>
@@ -786,13 +1136,64 @@
         <div id="home" class="page active">
             <section class="hero">
                 <div class="hero-content">
-                    <h1 class="hero-title">ᲗᲐᲙᲝ & ᲕᲘᲙᲐ</h1>
-                    <p class="hero-subtitle">ელეგანტურობის ხელოვნება</p>
+                    <h1 class="hero-title">ᲗᲐᲙᲝᲔᲑᲘ</h1>
+                    <p class="hero-subtitle">თაკო · ვიკა · დიანა</p>
                 </div>
                 <div class="scroll-indicator">
                     <i class="fas fa-chevron-down"></i>
                 </div>
             </section>
+
+            <!-- Marquee Ticker -->
+            <div class="marquee-section">
+                <div class="marquee-track">
+                    <span class="marquee-item">PROFESSIONAL MODEL <span class="marquee-dot"></span></span>
+                    <span class="marquee-item">FASHION PHOTOGRAPHY <span class="marquee-dot"></span></span>
+                    <span class="marquee-item">თაკო უძილაური <span class="marquee-dot"></span></span>
+                    <span class="marquee-item">EDITORIAL <span class="marquee-dot"></span></span>
+                    <span class="marquee-item">ვიკა ხარიტონაშვილი <span class="marquee-dot"></span></span>
+                    <span class="marquee-item">BEAUTY & STYLE <span class="marquee-dot"></span></span>
+                    <span class="marquee-item">GEORGIA MODEL AGENCY <span class="marquee-dot"></span></span>
+                    <span class="marquee-item">RUNWAY & PRINT <span class="marquee-dot"></span></span>
+                    <!-- duplicate for seamless loop -->
+                    <span class="marquee-item">PROFESSIONAL MODEL <span class="marquee-dot"></span></span>
+                    <span class="marquee-item">FASHION PHOTOGRAPHY <span class="marquee-dot"></span></span>
+                    <span class="marquee-item">თაკო უძილაური <span class="marquee-dot"></span></span>
+                    <span class="marquee-item">EDITORIAL <span class="marquee-dot"></span></span>
+                    <span class="marquee-item">ვიკა ხარიტონაშვილი <span class="marquee-dot"></span></span>
+                    <span class="marquee-item">BEAUTY & STYLE <span class="marquee-dot"></span></span>
+                    <span class="marquee-item">GEORGIA MODEL AGENCY <span class="marquee-dot"></span></span>
+                    <span class="marquee-item">RUNWAY & PRINT <span class="marquee-dot"></span></span>
+                </div>
+            </div>
+
+            <!-- Stats Section -->
+            <section class="stats-section">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number" data-target="120">0</div>
+                        <div class="stat-label">ფოტოსესია</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-target="45">0</div>
+                        <div class="stat-label">ბრენდი</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-target="3">0</div>
+                        <div class="stat-label">გამოცდილების წელი</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-target="12">0</div>
+                        <div class="stat-label">ჟურნალის გარეკანი</div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="divider">
+                <div class="divider-line"></div>
+                <i class="fas fa-star divider-icon"></i>
+                <div class="divider-line"></div>
+            </div>
 
             <section class="models-section">
                 <div class="models-grid">
@@ -809,7 +1210,7 @@
                             </div>
                         </div>
                         <div class="model-info">
-                            <h2 class="model-name">ᲗᲐᲙᲝ ᲣᲫᲘᲚᲐᲣᲠᲘ</h2>
+                            <h2 class="model-name">თაკო უძილაური</h2>
                             <p class="model-role">Professional Model</p>
                             <div class="model-social">
                                 <a href="https://www.instagram.com/takuuss/" target="_blank" class="social-link">
@@ -833,7 +1234,7 @@
                             </div>
                         </div>
                         <div class="model-info">
-                            <h2 class="model-name">ᲕᲘᲙᲐ ᲮᲐᲠᲘᲢᲝᲜᲐᲨᲕᲘᲚᲘ</h2>
+                            <h2 class="model-name">ვიკა ხარიტონაშვილი</h2>
                             <p class="model-role">Professional Model</p>
                             <div class="model-social">
                                 <a href="https://www.instagram.com/vikunnakh/" target="_blank" class="social-link">
@@ -843,15 +1244,50 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Diana -->
+                    <div class="model-card">
+                        <div class="model-image-container">
+                            <div class="model-image-grid" style="grid-template-columns: 1fr;">
+                                <div class="model-image" onclick="openModal('https://i.postimg.cc/4mS3RYYW/image.jpg')">
+                                    <img src="https://i.postimg.cc/4mS3RYYW/image.jpg" alt="დიანა ბოდაველი">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="model-info">
+                            <h2 class="model-name">დიანა ბოდაველი</h2>
+                            <p class="model-role">Professional Model</p>
+                            <div class="model-social">
+                                <a href="https://www.instagram.com/bodaveli_dianaa/" target="_blank" class="social-link">
+                                    <i class="fab fa-instagram"></i>
+                                    <span>@bodaveli_dianaa</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
+
+            <!-- Featured In -->
+            <section class="featured-section">
+                <p class="featured-label">Featured In</p>
+                <div class="brands-row">
+                    <span class="brand-name">VOGUE</span>
+                    <span class="brand-name">ELLE</span>
+                    <span class="brand-name">HARPER'S BAZAAR</span>
+                    <span class="brand-name">L'OFFICIEL</span>
+                    <span class="brand-name">COSMOPOLITAN</span>
+                    <span class="brand-name">GQ</span>
+                </div>
+            </section>
+
         </div>
 
         <!-- About Page -->
         <div id="about" class="page">
             <div class="page-header">
-                <h1 class="page-title">ჩვენ ᲨᲔᲡᲐᲮᲔᲑ</h1>
-                <p class="page-subtitle">სილამაზის და ელეგანტურობის განსახიერება</p>
+                <h1 class="page-title">ᲗᲐᲙᲝᲔᲑᲘ</h1>
+                <p class="page-subtitle">თაკო · ვიკა · დიანა</p>
             </div>
 
             <div class="about-grid">
@@ -886,6 +1322,23 @@
                     <div class="bio-highlight">
                         <strong>განსაკუთრებულობა:</strong><br>
                         ვიკას სტილი ხასიათდება ბოლდური და დახვეწილი მიდგომით. მისი უნიკალური სახის მახასიათებლები და გამომეტყველი პოზირების სტილი ქმნის დაუვიწყარ ვიზუალურ ნარატივს ყოველ სურათში.
+                    </div>
+                </div>
+
+                <div class="bio-card">
+                    <h2 class="bio-name">დიანა ბოდაველი</h2>
+                    <p class="bio-text">
+                        დიანა არის ახალი თაობის ქართველი მოდელი, რომელიც გამოირჩევა განსაკუთრებული ქარიზმით და ბუნებრივი მომხიბვლელობით. მისი სახის ნაზი, მაგრამ დამაჯერებელი სილამაზე ქმნის უნიკალურ ვიზუალურ შთაბეჭდილებას.
+                    </p>
+                    <p class="bio-text">
+                        დიანას თავდაჯერებულობა კამერის წინ და ბუნებრივი პოზირება გამოარჩევს მას. მის ყოველ კადრში ჩანს სიმსუბუქე, ელეგანტურობა და ის განუმეორებელი სითბო, რაც ყველა ფოტოსესიას სპეციალურს ხდის.
+                    </p>
+                    <p class="bio-text">
+                        სტუდიაში თუ ნატურაზე, დიანა ყოველ სიტუაციაში ახერხებს სრული სილამაზის გამოვლენას. მისი ენერგია გადამდები და შთამაგონებელია — ის ქმნის ატმოსფეროს, რომელიც სურათში ცოცხლდება.
+                    </p>
+                    <div class="bio-highlight">
+                        <strong>განსაკუთრებულობა:</strong><br>
+                        დიანას ბუნებრივი, შეუბრკოლებელი სილამაზე და თბილი გამომეტყველება ქმნის სრულყოფილ კავშირს მაყურებელთან. მისი თავდაჯერებული, მაგრამ ნატურალური სტილი მას გამოარჩევს სხვა მოდელებს შორის.
                     </div>
                 </div>
             </div>
@@ -928,6 +1381,13 @@
                             <p>მოდური ფოტოსესია</p>
                         </div>
                     </div>
+                    <div class="gallery-item" onclick="openModal('https://i.postimg.cc/4mS3RYYW/image.jpg')">
+                        <img src="https://i.postimg.cc/4mS3RYYW/image.jpg" alt="დიანა ბოდაველი">
+                        <div class="gallery-label">
+                            <h3>დიანა ბოდაველი</h3>
+                            <p>პორტრეტული სესია</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -940,12 +1400,12 @@
             </div>
 
             <div class="contact-container">
-                <div class="contact-grid">
+                <div class="contact-grid" style="grid-template-columns: repeat(3,1fr); gap:40px;">
                     <div class="contact-card">
                         <h2 class="contact-name">თაკო უძილაური</h2>
                         <div class="contact-item">
                             <i class="fas fa-envelope"></i>
-                            <span>tako.udzilauri@email.com</span>
+                            <span>tako.udzilauri@gmail.com</span>
                         </div>
                         <div class="contact-item">
                             <i class="fas fa-phone"></i>
@@ -958,9 +1418,6 @@
                             <a href="#" target="_blank">
                                 <i class="fab fa-facebook"></i>
                             </a>
-                            <a href="mailto:tako.udzilauri@email.com">
-                                <i class="fas fa-envelope"></i>
-                            </a>
                         </div>
                     </div>
 
@@ -968,7 +1425,7 @@
                         <h2 class="contact-name">ვიკა ხარიტონაშვილი</h2>
                         <div class="contact-item">
                             <i class="fas fa-envelope"></i>
-                            <span>vika.kharitonashvili@email.com</span>
+                            <span>vika.kharitonashvili@gmail.com</span>
                         </div>
                         <div class="contact-item">
                             <i class="fas fa-phone"></i>
@@ -981,8 +1438,25 @@
                             <a href="#" target="_blank">
                                 <i class="fab fa-facebook"></i>
                             </a>
-                            <a href="mailto:vika.kharitonashvili@email.com">
-                                <i class="fas fa-envelope"></i>
+                        </div>
+                    </div>
+
+                    <div class="contact-card">
+                        <h2 class="contact-name">დიანა ბოდაველი</h2>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>diana.bodaveli@gmail.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <span>+995 555 456 789</span>
+                        </div>
+                        <div class="contact-socials">
+                            <a href="https://www.instagram.com/bodaveli_dianaa/" target="_blank">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="#" target="_blank">
+                                <i class="fab fa-facebook"></i>
                             </a>
                         </div>
                     </div>
@@ -992,7 +1466,7 @@
 
         <!-- Footer -->
         <footer>
-            <p class="footer-text">© 2026 თაკო უძილაური & ვიკა ხარიტონაშვილი</p>
+            <p class="footer-text">© 2026 ᲗᲐᲙᲝᲔᲑᲘ · თაკო · ვიკა · დიანა</p>
             <div class="footer-icons">
                 <i class="fas fa-camera"></i>
                 <i class="fas fa-star"></i>
@@ -1011,6 +1485,85 @@
     </div>
 
     <script>
+        // Loading Screen
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').classList.add('hidden');
+                triggerCounters();
+            }, 2200);
+        });
+
+        // Custom Cursor
+        const dot = document.getElementById('cursorDot');
+        const ring = document.getElementById('cursorRing');
+        let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            dot.style.left = mouseX + 'px';
+            dot.style.top = mouseY + 'px';
+            const trail = document.createElement('div');
+            trail.className = 'cursor-trail';
+            trail.style.left = mouseX + 'px';
+            trail.style.top = mouseY + 'px';
+            document.body.appendChild(trail);
+            setTimeout(() => trail.remove(), 600);
+        });
+
+        function animateRing() {
+            ringX += (mouseX - ringX) * 0.12;
+            ringY += (mouseY - ringY) * 0.12;
+            ring.style.left = ringX + 'px';
+            ring.style.top = ringY + 'px';
+            requestAnimationFrame(animateRing);
+        }
+        animateRing();
+
+        document.querySelectorAll('a, button, .gallery-item, .model-image, .stat-item, .brand-name').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                ring.style.width = '70px'; ring.style.height = '70px';
+                ring.style.borderColor = 'var(--accent-rose)';
+            });
+            el.addEventListener('mouseleave', () => {
+                ring.style.width = '40px'; ring.style.height = '40px';
+                ring.style.borderColor = 'var(--accent-gold)';
+            });
+        });
+
+        // Parallax Hero
+        document.addEventListener('mousemove', (e) => {
+            const hero = document.querySelector('.hero-title');
+            if (!hero) return;
+            const xShift = (e.clientX / window.innerWidth - 0.5) * 18;
+            const yShift = (e.clientY / window.innerHeight - 0.5) * 8;
+            hero.style.transform = `translate(${xShift}px, ${yShift}px)`;
+        });
+
+        // Stats Counter
+        function triggerCounters() {
+            document.querySelectorAll('.stat-number').forEach(el => {
+                const target = parseInt(el.getAttribute('data-target'));
+                let current = 0;
+                const step = target / 80;
+                const timer = setInterval(() => {
+                    current += step;
+                    if (current >= target) {
+                        el.textContent = target + '+';
+                        clearInterval(timer);
+                    } else {
+                        el.textContent = Math.floor(current);
+                    }
+                }, 20);
+            });
+        }
+
+        // Scroll to top
+        document.getElementById('scrollTopBtn')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
         // Navigation
         const navLinks = document.querySelectorAll('.nav-link');
         const pages = document.querySelectorAll('.page');
@@ -1018,22 +1571,19 @@
         navLinks.forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
-                const pageName = this.getAttribute('data-page');
-                showPage(pageName);
+                showPage(this.getAttribute('data-page'));
             });
         });
 
         function showPage(pageName) {
             navLinks.forEach(l => l.classList.remove('active'));
             pages.forEach(p => p.classList.remove('active'));
-            
-            const activeLink = document.querySelector(`[data-page="${pageName}"]`);
+            const activeLink = document.querySelector('[data-page="' + pageName + '"]');
             if (activeLink) activeLink.classList.add('active');
-            
             document.getElementById(pageName).classList.add('active');
-            
             document.getElementById('navMenu').classList.remove('active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (pageName === 'home') setTimeout(triggerCounters, 400);
         }
 
         function toggleNav() {
@@ -1043,9 +1593,8 @@
         // Modal
         function openModal(src) {
             const modal = document.getElementById('modal');
-            const modalImg = document.getElementById('modalImage');
+            document.getElementById('modalImage').src = src;
             modal.classList.add('active');
-            modalImg.src = src;
             document.body.style.overflow = 'hidden';
         }
 
@@ -1054,9 +1603,7 @@
             document.body.style.overflow = 'auto';
         }
 
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') closeModal();
-        });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
     </script>
 </body>
 </html>
